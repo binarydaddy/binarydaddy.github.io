@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Test</title>
+    <!-- Add Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        code {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Markdown Test</h1>
+    <div id="content">Loading...</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                console.log('Attempting to load review.md...');
+                const response = await fetch('papers/example-paper/review.md');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const text = await response.text();
+                console.log('Content loaded, length:', text.length);
+                console.log('First 100 characters:', text.substring(0, 100));
+                
+                if (typeof marked === 'undefined') {
+                    document.getElementById('content').innerHTML = 'Error: marked.js is not loaded';
+                    return;
+                }
+                
+                const html = marked.parse(text);
+                document.getElementById('content').innerHTML = html;
+                console.log('Markdown rendered successfully');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = `Error loading or parsing Markdown: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -9,6 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Add highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
+    <!-- Add MathJax for rendering LaTeX equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <header>
@@ -38,117 +46,44 @@
             <article class="review-content">
                 <!-- Paper Header -->
                 <header class="paper-header">
-                    <h1>Paper Title</h1>
+                    <h1 id="paper-title">Paper Title</h1>
                     <div class="paper-meta">
-                        <p class="authors">Authors: Author 1, Author 2, et al.</p>
-                        <p class="conference">Conference/Journal: Conference Name Year</p>
+                        <p class="authors" id="paper-authors">Authors: Author 1, Author 2, et al.</p>
+                        <p class="conference" id="paper-conference">Conference/Journal: Conference Name Year</p>
                         <div class="paper-links">
-                            <a href="#" class="btn small" target="_blank">
+                            <a href="#" class="btn small" target="_blank" id="paper-pdf">
                                 <i class="fas fa-file-pdf"></i> PDF
                             </a>
-                            <a href="#" class="btn small" target="_blank">
+                            <a href="#" class="btn small" target="_blank" id="paper-code">
                                 <i class="fas fa-code"></i> Code
                             </a>
                         </div>
                     </div>
                 </header>
 
-                <!-- Quick Summary -->
-                <section class="quick-summary">
-                    <h2>Quick Summary</h2>
-                    <p>A brief 2-3 sentence summary of the paper's main contribution and findings.</p>
-                </section>
-
-                <!-- Key Points -->
-                <section class="key-points">
-                    <h2>Key Points</h2>
-                    <ul>
-                        <li>Key point 1</li>
-                        <li>Key point 2</li>
-                        <li>Key point 3</li>
-                    </ul>
-                </section>
-
-                <!-- Detailed Review -->
-                <section class="detailed-review">
-                    <h2>Detailed Review</h2>
-                    
-                    <h3>1. Introduction</h3>
-                    <p>Your analysis of the paper's introduction, including:</p>
-                    <ul>
-                        <li>Problem statement</li>
-                        <li>Motivation</li>
-                        <li>Related work</li>
-                    </ul>
-
-                    <h3>2. Methodology</h3>
-                    <p>Analysis of the paper's methodology, including:</p>
-                    <ul>
-                        <li>Technical approach</li>
-                        <li>Architecture</li>
-                        <li>Implementation details</li>
-                    </ul>
-
-                    <h3>3. Results</h3>
-                    <p>Discussion of the paper's results:</p>
-                    <ul>
-                        <li>Experimental setup</li>
-                        <li>Performance metrics</li>
-                        <li>Comparison with baselines</li>
-                    </ul>
-
-                    <h3>4. Discussion</h3>
-                    <p>Your thoughts on:</p>
-                    <ul>
-                        <li>Strengths</li>
-                        <li>Limitations</li>
-                        <li>Future work</li>
-                    </ul>
-                </section>
-
-                <!-- Technical Implementation -->
-                <section class="technical-implementation">
-                    <h2>Technical Implementation</h2>
-                    <p>If applicable, your implementation details or code snippets:</p>
-                    <pre><code>
-# Example code snippet
-def example_function():
-    pass
-                    </code></pre>
-                </section>
-
-                <!-- Conclusion -->
-                <section class="conclusion">
-                    <h2>Conclusion</h2>
-                    <p>Your overall assessment of the paper and its impact on the field.</p>
-                </section>
-
-                <!-- References -->
-                <section class="references">
-                    <h2>References</h2>
-                    <ul>
-                        <li>Reference 1</li>
-                        <li>Reference 2</li>
-                        <li>Reference 3</li>
-                    </ul>
-                </section>
+                <!-- Content will be loaded from Markdown -->
+                <div id="markdown-content">
+                    <div class="loading">
+                        <p>Loading paper review...</p>
+                    </div>
+                </div>
             </article>
 
             <!-- Sidebar -->
             <aside class="review-sidebar">
                 <div class="paper-info-card">
                     <h3>Paper Information</h3>
-                    <ul>
-                        <li><strong>Category:</strong> [Category]</li>
-                        <li><strong>Year:</strong> [Year]</li>
-                        <li><strong>Venue:</strong> [Venue]</li>
-                        <li><strong>Citations:</strong> [Number]</li>
+                    <ul id="paper-metadata">
+                        <li><strong>Category:</strong> <span id="paper-category">[Category]</span></li>
+                        <li><strong>Year:</strong> <span id="paper-year">[Year]</span></li>
+                        <li><strong>Venue:</strong> <span id="paper-venue">[Venue]</span></li>
+                        <li><strong>Citations:</strong> <span id="paper-citations">[Number]</span></li>
                     </ul>
                 </div>
 
                 <div class="related-papers">
                     <h3>Related Papers</h3>
-                    <ul>
+                    <ul id="related-papers-list">
                         <li><a href="#">Related Paper 1</a></li>
                         <li><a href="#">Related Paper 2</a></li>
                         <li><a href="#">Related Paper 3</a></li>
@@ -165,5 +100,110 @@ def example_function():
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Get the paper ID from the URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const paperId = urlParams.get('id') || 'example-paper'; // Default to example-paper if no ID provided
+            
+            try {
+                // Load paper metadata and content
+                const metadataResponse = await fetch(`papers/${paperId}/metadata.json`);
+                
+                if (!metadataResponse.ok) {
+                    throw new Error('Failed to load paper metadata');
+                }
+                
+                const metadata = await metadataResponse.json();
+                
+                // Update page title
+                document.title = `Paper Review - ${metadata.title}`;
+                
+                // Update header information
+                document.getElementById('paper-title').textContent = metadata.title;
+                document.getElementById('paper-authors').textContent = `Authors: ${metadata.authors}`;
+                document.getElementById('paper-conference').textContent = `Conference/Journal: ${metadata.venue} ${metadata.year}`;
+                
+                // Update links
+                if (metadata.pdfUrl) {
+                    document.getElementById('paper-pdf').href = metadata.pdfUrl;
+                }
+                
+                if (metadata.codeUrl) {
+                    document.getElementById('paper-code').href = metadata.codeUrl;
+                } else {
+                    document.getElementById('paper-code').style.display = 'none';
+                }
+                
+                // Update sidebar metadata
+                document.getElementById('paper-category').textContent = metadata.category;
+                document.getElementById('paper-year').textContent = metadata.year;
+                document.getElementById('paper-venue').textContent = metadata.venue;
+                document.getElementById('paper-citations').textContent = metadata.citations || 'N/A';
+                
+                // Update related papers
+                const relatedPapersList = document.getElementById('related-papers-list');
+                relatedPapersList.innerHTML = '';
+                
+                if (metadata.relatedPapers && metadata.relatedPapers.length > 0) {
+                    metadata.relatedPapers.forEach(paper => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = `paper-review-template.html?id=${paper.id}`;
+                        a.textContent = paper.title;
+                        li.appendChild(a);
+                        relatedPapersList.appendChild(li);
+                    });
+                } else {
+                    relatedPapersList.innerHTML = '<li>No related papers</li>';
+                }
+                
+                // Load and render the Markdown content
+                const contentResponse = await fetch(`papers/${paperId}/review.md`);
+                
+                if (!contentResponse.ok) {
+                    throw new Error('Failed to load paper content');
+                }
+                
+                const markdownContent = await contentResponse.text();
+                
+                // Configure marked.js options
+                marked.setOptions({
+                    highlight: function(code, lang) {
+                        if (lang && hljs.getLanguage(lang)) {
+                            return hljs.highlight(code, { language: lang }).value;
+                        }
+                        return hljs.highlightAuto(code).value;
+                    },
+                    breaks: true
+                });
+                
+                // Convert markdown to HTML and insert into the page
+                document.getElementById('markdown-content').innerHTML = marked.parse(markdownContent);
+                
+                // Initialize syntax highlighting for code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+                
+                // Render MathJax equations
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typesetPromise().catch((err) => {
+                        console.error('Error rendering MathJax:', err);
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Error loading paper review:', error);
+                document.getElementById('markdown-content').innerHTML = `
+                    <div class="error">
+                        <h2>Error Loading Paper Review</h2>
+                        <p>${error.message}</p>
+                        <p>Please check the paper ID and try again.</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
 </body>
 </html> 

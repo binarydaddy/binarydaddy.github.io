@@ -1,0 +1,24 @@
+{
+    "title": "Attention Is All You Need",
+    "authors": "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, Illia Polosukhin",
+    "venue": "NeurIPS",
+    "year": 2017,
+    "category": "NLP",
+    "citations": 67000,
+    "pdfUrl": "https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf",
+    "codeUrl": "https://github.com/tensorflow/tensor2tensor",
+    "relatedPapers": [
+        {
+            "id": "bert",
+            "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+        },
+        {
+            "id": "gpt",
+            "title": "Improving Language Understanding by Generative Pre-Training"
+        },
+        {
+            "id": "transformer-xl",
+            "title": "Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context"
+        }
+    ]
+} 

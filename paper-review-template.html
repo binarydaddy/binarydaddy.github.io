@@ -9,11 +9,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Add Marked.js for Markdown parsing -->
+    <!-- Add Marked.js for Markdown parsing (pinned version) -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
-    <!-- Add highlight.js for code syntax highlighting -->
+    <!-- Add highlight.js for code syntax highlighting (with explicit loading of languages) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
+    <!-- Load common languages -->
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/bash.min.js"></script>
+    <script>
+        // Initialize highlight.js
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof hljs !== 'undefined') {
+                console.log('highlight.js loaded and initialized');
+                hljs.configure({
+                    ignoreUnescapedHTML: true
+                });
+            } else {
+                console.warn('highlight.js not available at initialization');
+            }
+        });
+    </script>
     <!-- Add MathJax for rendering LaTeX equations -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -317,10 +335,28 @@
                             smartLists: true,
                             smartypants: true,
                             highlight: function(code, lang) {
-                                if (lang && hljs.getLanguage(lang)) {
-                                    return hljs.highlight(code, { language: lang }).value;
+                                // Check if highlight.js is available
+                                if (typeof hljs === 'undefined') {
+                                    console.warn('highlight.js is not available, skipping syntax highlighting');
+                                    return code;
                                 }
-                                return hljs.highlightAuto(code).value;
+                                
+                                // Apply syntax highlighting if language is specified and available
+                                if (lang && hljs.getLanguage(lang)) {
+                                    try {
+                                        return hljs.highlight(code, { language: lang }).value;
+                                    } catch (err) {
+                                        console.error('Failed to highlight code block:', err);
+                                    }
+                                }
+                                
+                                // Fallback to auto-detection or plain code
+                                try {
+                                    return hljs.highlightAuto(code).value;
+                                } catch (err) {
+                                    console.error('Failed to auto-highlight code block:', err);
+                                    return code;
+                                }
                             }
                         });
                         
@@ -332,6 +368,20 @@
                         // Set the HTML content
                         document.getElementById('markdown-content').innerHTML = parsedHtml;
                         console.log('HTML content set to DOM');
+                        
+                        // Initialize syntax highlighting for code blocks
+                        console.log('Initializing syntax highlighting...');
+                        if (typeof hljs !== 'undefined') {
+                            document.querySelectorAll('pre code').forEach((block) => {
+                                try {
+                                    hljs.highlightElement(block);
+                                } catch (err) {
+                                    console.error('Error highlighting code block:', err);
+                                }
+                            });
+                        } else {
+                            console.warn('highlight.js is not available for code block highlighting');
+                        }
                     } catch (markdownError) {
                         console.error('Error in marked.js:', markdownError);
                         
@@ -345,12 +395,6 @@
                             </div>
                         `;
                     }
-                    
-                    // Initialize syntax highlighting for code blocks
-                    console.log('Initializing syntax highlighting...');
-                    document.querySelectorAll('pre code').forEach((block) => {
-                        hljs.highlightBlock(block);
-                    });
                     
                     // Render MathJax equations
                     if (typeof MathJax !== 'undefined') {

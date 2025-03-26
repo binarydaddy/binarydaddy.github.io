@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlight.js Test</title>
+    <!-- Add highlight.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        code {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Highlight.js Test</h1>
+    
+    <h2>Python Example</h2>
+    <pre><code class="language-python">
+def hello_world():
+    print("Hello, world!")
+    
+# A simple class example
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def greet(self):
+        return f"Hello, my name is {self.name} and I am {self.age} years old."
+        
+# Create an instance
+person = Person("Alice", 30)
+print(person.greet())
+    </code></pre>
+    
+    <h2>JavaScript Example</h2>
+    <pre><code class="language-javascript">
+function helloWorld() {
+    console.log("Hello, world!");
+}
+
+// A simple class example
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
+    }
+}
+
+// Create an instance
+const person = new Person("Alice", 30);
+console.log(person.greet());
+    </code></pre>
+    
+    <div id="status">Checking highlight.js status...</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusEl = document.getElementById('status');
+            
+            // Check if highlight.js is loaded
+            if (typeof hljs === 'undefined') {
+                statusEl.textContent = 'ERROR: highlight.js is not loaded!';
+                statusEl.style.color = 'red';
+                return;
+            }
+            
+            statusEl.textContent = 'highlight.js is loaded.';
+            
+            try {
+                // Initialize highlight.js
+                hljs.configure({
+                    ignoreUnescapedHTML: true
+                });
+                
+                // Apply highlighting to all code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+                
+                statusEl.textContent += ' Syntax highlighting applied successfully!';
+                statusEl.style.color = 'green';
+            } catch (error) {
+                statusEl.textContent += ` ERROR: ${error.message}`;
+                statusEl.style.color = 'red';
+                console.error('Error applying syntax highlighting:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

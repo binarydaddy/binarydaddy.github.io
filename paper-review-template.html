@@ -9,32 +9,68 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Add Marked.js for Markdown parsing (pinned version) -->
-    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    
     <!-- Add highlight.js for code syntax highlighting (with explicit loading of languages) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
-    <!-- Load common languages -->
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/python.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/java.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/bash.min.js"></script>
-    <script>
-        // Initialize highlight.js
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof hljs !== 'undefined') {
-                console.log('highlight.js loaded and initialized');
-                hljs.configure({
-                    ignoreUnescapedHTML: true
-                });
-            } else {
-                console.warn('highlight.js not available at initialization');
-            }
-        });
-    </script>
+    
+    <!-- Add Marked.js for Markdown parsing (pinned version) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    
     <!-- Add MathJax for rendering LaTeX equations -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Inline initialization script to ensure highlight.js is properly loaded -->
+    <script>
+        // Global flag to track if highlight.js is available
+        window.highlightJsLoaded = false;
+        
+        // Function to check if highlight.js is available
+        function checkHighlightJs() {
+            if (typeof hljs !== 'undefined') {
+                console.log('highlight.js detected');
+                window.highlightJsLoaded = true;
+                
+                // Configure highlight.js
+                try {
+                    hljs.configure({
+                        ignoreUnescapedHTML: true
+                    });
+                    console.log('highlight.js configured successfully');
+                } catch (err) {
+                    console.error('Failed to configure highlight.js:', err);
+                }
+                
+                return true;
+            }
+            return false;
+        }
+        
+        // Try to initialize highlight.js when the script loads
+        checkHighlightJs();
+        
+        // Also check when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!window.highlightJsLoaded) {
+                if (checkHighlightJs()) {
+                    console.log('highlight.js initialized on DOMContentLoaded');
+                } else {
+                    console.warn('highlight.js not available on DOMContentLoaded');
+                    
+                    // Try to load highlight.js dynamically if not available
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js';
+                    script.onload = function() {
+                        console.log('highlight.js loaded dynamically');
+                        checkHighlightJs();
+                    };
+                    document.head.appendChild(script);
+                }
+            }
+        });
+    </script>
+    
     <style>
         /* Debug panel styles */
         #debug-panel {
@@ -335,9 +371,14 @@
                             smartLists: true,
                             smartypants: true,
                             highlight: function(code, lang) {
-                                // Check if highlight.js is available
-                                if (typeof hljs === 'undefined') {
-                                    console.warn('highlight.js is not available, skipping syntax highlighting');
+                                // Check if highlight.js is available using our global flag
+                                if (!window.highlightJsLoaded) {
+                                    // Try to check again, maybe it loaded in the meantime
+                                    checkHighlightJs();
+                                }
+                                
+                                if (!window.highlightJsLoaded) {
+                                    console.warn('highlight.js not available for syntax highlighting, displaying plain code');
                                     return code;
                                 }
                                 
@@ -370,8 +411,8 @@
                         console.log('HTML content set to DOM');
                         
                         // Initialize syntax highlighting for code blocks
-                        console.log('Initializing syntax highlighting...');
-                        if (typeof hljs !== 'undefined') {
+                        console.log('Initializing syntax highlighting for code blocks...');
+                        if (window.highlightJsLoaded) {
                             document.querySelectorAll('pre code').forEach((block) => {
                                 try {
                                     hljs.highlightElement(block);
@@ -380,7 +421,20 @@
                                 }
                             });
                         } else {
-                            console.warn('highlight.js is not available for code block highlighting');
+                            console.warn('highlight.js not available for code block highlighting');
+                            // Try one more time to load highlight.js and apply it
+                            setTimeout(function() {
+                                if (checkHighlightJs()) {
+                                    console.log('highlight.js loaded on delayed check, applying to code blocks');
+                                    document.querySelectorAll('pre code').forEach((block) => {
+                                        try {
+                                            hljs.highlightElement(block);
+                                        } catch (err) {
+                                            console.error('Error highlighting code block on delayed check:', err);
+                                        }
+                                    });
+                                }
+                            }, 1000); // Wait 1 second and try again
                         }
                     } catch (markdownError) {
                         console.error('Error in marked.js:', markdownError);

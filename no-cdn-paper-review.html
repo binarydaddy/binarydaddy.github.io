@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Review - No CDN Version</title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Basic styling for Markdown content */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #222;
+        }
+        
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; }
+        
+        p { margin-bottom: 1em; }
+        
+        code {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 1em;
+            color: #666;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .markdown-content {
+            background: white;
+            padding: 2em;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Paper header styling */
+        .paper-header {
+            margin-bottom: 2em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .paper-meta {
+            color: #666;
+            margin-bottom: 1em;
+        }
+        
+        /* Debug panel */
+        #debug-panel {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px;
+            z-index: 9999;
+            display: none;
+        }
+        
+        #debug-panel.show {
+            display: block;
+        }
+        
+        #debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Paper Review</h1>
+        <nav>
+            <a href="index.html">Back to Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Paper Header -->
+        <header class="paper-header">
+            <h1 id="paper-title">Loading Paper...</h1>
+            <div class="paper-meta">
+                <p id="paper-authors">Authors: Loading...</p>
+                <p id="paper-conference">Conference/Journal: Loading...</p>
+            </div>
+        </header>
+
+        <!-- Content will be loaded from Markdown -->
+        <div id="markdown-content" class="markdown-content">
+            <div class="loading">
+                <p>Loading paper review...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="debug-panel"></div>
+    <button id="debug-toggle">Debug</button>
+
+    <script>
+        // Simple debug logger
+        const debugPanel = document.getElementById('debug-panel');
+        const debugToggle = document.getElementById('debug-toggle');
+        
+        debugToggle.addEventListener('click', function() {
+            debugPanel.classList.toggle('show');
+        });
+        
+        function log(msg) {
+            console.log(msg);
+            const logItem = document.createElement('div');
+            logItem.textContent = msg;
+            debugPanel.appendChild(logItem);
+            debugPanel.scrollTop = debugPanel.scrollHeight;
+        }
+        
+        // Simple markdown parser (very basic)
+        function parseMarkdown(markdown) {
+            log('Parsing markdown content...');
+            
+            // Replace headers
+            markdown = markdown.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            markdown = markdown.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            markdown = markdown.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            markdown = markdown.replace(/^#### (.*$)/gm, '<h4>$1</h4>');
+            
+            // Replace bold and italic
+            markdown = markdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            markdown = markdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // Replace code blocks
+            markdown = markdown.replace(/```([a-z]*)\n([\s\S]*?)\n```/g, function(match, lang, code) {
+                return '<pre><code class="language-' + lang + '">' + 
+                    code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + 
+                    '</code></pre>';
+            });
+            
+            // Replace inline code
+            markdown = markdown.replace(/`([^`]+)`/g, '<code>$1</code>');
+            
+            // Replace lists
+            markdown = markdown.replace(/^\- (.*$)/gm, '<li>$1</li>');
+            markdown = markdown.replace(/(<li>.*<\/li>\n)+/g, '<ul>$&</ul>');
+            
+            // Replace paragraphs (must be after lists)
+            markdown = markdown.replace(/^(?!<[a-z])(.*$)/gm, function(match) {
+                return match.trim() === '' ? '' : '<p>' + match + '</p>';
+            });
+            
+            // Replace links
+            markdown = markdown.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
+            
+            log('Markdown parsing complete');
+            return markdown;
+        }
+        
+        // Load paper data
+        async function loadPaper() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const paperId = urlParams.get('id') || 'example-paper';
+                log(`Loading paper with ID: ${paperId}`);
+                
+                // Try to load metadata
+                try {
+                    // First try XMLHttpRequest for metadata
+                    const metadataResponse = await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `papers/${paperId}/metadata.json`, true);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    resolve(JSON.parse(xhr.responseText));
+                                } catch (e) {
+                                    reject(new Error(`Invalid JSON in metadata: ${e.message}`));
+                                }
+                            } else {
+                                reject(new Error(`Failed to load metadata: ${xhr.status}`));
+                            }
+                        };
+                        xhr.onerror = function() {
+                            reject(new Error('Network error loading metadata'));
+                        };
+                        xhr.send();
+                    });
+                    
+                    log('Metadata loaded successfully');
+                    
+                    // Update the UI with metadata
+                    document.getElementById('paper-title').textContent = metadataResponse.title || 'Unknown Paper';
+                    document.getElementById('paper-authors').textContent = `Authors: ${metadataResponse.authors || 'Unknown'}`;
+                    document.getElementById('paper-conference').textContent = 
+                        `Conference/Journal: ${metadataResponse.venue || ''} ${metadataResponse.year || ''}`;
+                    
+                    document.title = `Paper Review - ${metadataResponse.title}`;
+                } catch (metadataError) {
+                    log(`Error loading metadata: ${metadataError.message}`);
+                    document.getElementById('paper-title').textContent = 'Paper Review';
+                }
+                
+                // Try to load markdown content
+                try {
+                    // Use XMLHttpRequest for content
+                    const markdownContent = await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `papers/${paperId}/review.md`, true);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                resolve(xhr.responseText);
+                            } else {
+                                reject(new Error(`Failed to load markdown: ${xhr.status}`));
+                            }
+                        };
+                        xhr.onerror = function() {
+                            reject(new Error('Network error loading markdown'));
+                        };
+                        xhr.send();
+                    });
+                    
+                    log(`Markdown content loaded, length: ${markdownContent.length}`);
+                    
+                    // Parse the markdown
+                    const htmlContent = parseMarkdown(markdownContent);
+                    
+                    // Update the UI with content
+                    document.getElementById('markdown-content').innerHTML = htmlContent;
+                    log('Content rendered successfully');
+                    
+                } catch (contentError) {
+                    log(`Error loading content: ${contentError.message}`);
+                    document.getElementById('markdown-content').innerHTML = `
+                        <div class="error">
+                            <h2>Error Loading Paper Content</h2>
+                            <p>${contentError.message}</p>
+                            <p>Please check that the review.md file exists at papers/${paperId}/review.md</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                log(`Error: ${error.message}`);
+                document.getElementById('markdown-content').innerHTML = `
+                    <div class="error">
+                        <h2>Error</h2>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Start loading when page is ready
+        document.addEventListener('DOMContentLoaded', loadPaper);
+    </script>
+</body>
+</html> 

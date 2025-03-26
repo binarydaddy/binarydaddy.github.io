@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Developer Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="#home">Your Name</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#papers">Paper Reviews</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>AI Researcher & Developer</h1>
+                <p>Building intelligent systems and sharing knowledge through thorough paper reviews</p>
+                <div class="buttons">
+                    <a href="#projects" class="btn primary">View My Work</a>
+                    <a href="#papers" class="btn secondary">Read Paper Reviews</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! I'm an AI developer and researcher passionate about [your specific interests in AI]. My work focuses on [your area of expertise].</p>
+                    <p>With experience in [relevant technologies, frameworks, etc.], I enjoy tackling complex problems and sharing knowledge with the AI community.</p>
+                    <div class="skills">
+                        <h3>Skills & Technologies</h3>
+                        <div class="skill-tags">
+                            <span>Machine Learning</span>
+                            <span>Deep Learning</span>
+                            <span>Computer Vision</span>
+                            <span>NLP</span>
+                            <span>TensorFlow</span>
+                            <span>PyTorch</span>
+                            <span>Python</span>
+                            <!-- Add or modify skill tags as needed -->
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <!-- Replace with your profile image -->
+                    <img src="https://via.placeholder.com/400" alt="Profile picture">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-media">
+                        <!-- You can replace this with a GIF or add a video element -->
+                        <img src="https://via.placeholder.com/600x400" alt="Project 1">
+                    </div>
+                    <div class="project-info">
+                        <h3>Project Title 1</h3>
+                        <p>Description of your AI project. Explain the problem it solves, technologies used, and your role in it.</p>
+                        <div class="project-tags">
+                            <span>Deep Learning</span>
+                            <span>Computer Vision</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn small">View Details</a>
+                            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-media">
+                        <!-- Example of video embed -->
+                        <video controls>
+                            <source src="path/to/your/video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="project-info">
+                        <h3>Project Title 2</h3>
+                        <p>Description of your AI project. Explain the problem it solves, technologies used, and your role in it.</p>
+                        <div class="project-tags">
+                            <span>NLP</span>
+                            <span>Transformers</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn small">View Details</a>
+                            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-media">
+                        <!-- Example of GIF -->
+                        <img src="path/to/your/animation.gif" alt="Project 3 Demo">
+                    </div>
+                    <div class="project-info">
+                        <h3>Project Title 3</h3>
+                        <p>Description of your AI project. Explain the problem it solves, technologies used, and your role in it.</p>
+                        <div class="project-tags">
+                            <span>Reinforcement Learning</span>
+                            <span>Simulation</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn small">View Details</a>
+                            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="papers" class="papers">
+        <div class="container">
+            <h2 class="section-title">Paper Reviews</h2>
+            <div class="paper-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="cv">Computer Vision</button>
+                <button class="filter-btn" data-filter="nlp">NLP</button>
+                <button class="filter-btn" data-filter="rl">Reinforcement Learning</button>
+                <!-- Add more filter buttons as needed -->
+            </div>
+            <div class="papers-grid">
+                <!-- Paper Review 1 -->
+                <div class="paper-card" data-category="cv">
+                    <div class="paper-info">
+                        <h3>Paper Title 1</h3>
+                        <p class="paper-authors">Authors: Name 1, Name 2, et al.</p>
+                        <p class="paper-conference">Conference/Journal: CVPR 2023</p>
+                        <p class="paper-summary">Brief summary of the paper and your insights on it.</p>
+                        <div class="paper-tags">
+                            <span>Computer Vision</span>
+                            <span>Object Detection</span>
+                        </div>
+                    </div>
+                    <div class="paper-links">
+                        <a href="#" class="btn small">Read Full Review</a>
+                        <a href="#" target="_blank" class="original-paper">Original Paper <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+
+                <!-- Paper Review 2 -->
+                <div class="paper-card" data-category="nlp">
+                    <div class="paper-info">
+                        <h3>Paper Title 2</h3>
+                        <p class="paper-authors">Authors: Name 1, Name 2, et al.</p>
+                        <p class="paper-conference">Conference/Journal: ACL 2023</p>
+                        <p class="paper-summary">Brief summary of the paper and your insights on it.</p>
+                        <div class="paper-tags">
+                            <span>NLP</span>
+                            <span>Transformers</span>
+                        </div>
+                    </div>
+                    <div class="paper-links">
+                        <a href="#" class="btn small">Read Full Review</a>
+                        <a href="#" target="_blank" class="original-paper">Original Paper <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+
+                <!-- Paper Review 3 -->
+                <div class="paper-card" data-category="rl">
+                    <div class="paper-info">
+                        <h3>Paper Title 3</h3>
+                        <p class="paper-authors">Authors: Name 1, Name 2, et al.</p>
+                        <p class="paper-conference">Conference/Journal: ICML 2023</p>
+                        <p class="paper-summary">Brief summary of the paper and your insights on it.</p>
+                        <div class="paper-tags">
+                            <span>Reinforcement Learning</span>
+                            <span>Game Theory</span>
+                        </div>
+                    </div>
+                    <div class="paper-links">
+                        <a href="#" class="btn small">Read Full Review</a>
+                        <a href="#" target="_blank" class="original-paper">Original Paper <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="load-more">
+                <button class="btn secondary">Load More Papers</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p>Interested in collaborating or have questions about my work? Feel free to reach out!</p>
+                    <div class="contact-links">
+                        <a href="mailto:your.email@example.com"><i class="fas fa-envelope"></i> your.email@example.com</a>
+                        <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        <a href="https://linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://twitter.com/yourusername" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© <span id="year">2024</span> Your Name. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

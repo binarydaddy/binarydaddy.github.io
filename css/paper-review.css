@@ -1,0 +1,311 @@
+/* Paper Review Page Styles */
+
+.paper-review {
+    padding-top: 120px;
+    padding-bottom: 4rem;
+}
+
+.paper-review-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.paper-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.paper-meta span {
+    background-color: var(--light-gray);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+}
+
+.paper-meta .paper-category {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.paper-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+    line-height: 1.3;
+}
+
+.paper-authors {
+    margin-bottom: 1.5rem;
+    color: var(--gray);
+}
+
+.paper-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Paper Content */
+.paper-content {
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) 3fr;
+    gap: 3rem;
+}
+
+.table-of-contents {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.table-of-contents h3 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.table-of-contents ul {
+    padding-left: 0.5rem;
+}
+
+.table-of-contents ul li {
+    margin-bottom: 0.8rem;
+}
+
+.table-of-contents ul li a {
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.table-of-contents ul li a:hover {
+    color: var(--primary-color);
+    padding-left: 0.2rem;
+}
+
+/* Paper Sections */
+.paper-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.paper-section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+    font-size: 2rem;
+}
+
+.paper-section p {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+.key-takeaways {
+    background-color: #f1f5f9;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin: 2rem 0;
+}
+
+.key-takeaways h3 {
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.key-takeaways ul {
+    padding-left: 1.5rem;
+}
+
+.key-takeaways ul li {
+    margin-bottom: 0.8rem;
+}
+
+/* Paper Figures */
+.paper-figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.paper-figure img {
+    max-width: 100%;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+}
+
+.paper-figure figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+/* Math Formulas */
+.math-formula {
+    overflow-x: auto;
+    padding: 1.5rem;
+    background-color: #f8fafc;
+    border-radius: var(--border-radius);
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+/* Code Snippets */
+pre {
+    margin: 1.5rem 0;
+    border-radius: var(--border-radius);
+}
+
+code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Tables */
+.results-table {
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+.results-table h3 {
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+table th, table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+
+table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Strengths & Weaknesses */
+.strengths-weaknesses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.strengths, .weaknesses {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+.strengths {
+    background-color: #f0fdf4;
+}
+
+.weaknesses {
+    background-color: #fef2f2;
+}
+
+.strengths h3, .weaknesses h3 {
+    margin-bottom: 1rem;
+}
+
+.strengths ul, .weaknesses ul {
+    padding-left: 1.5rem;
+}
+
+.strengths ul li, .weaknesses ul li {
+    margin-bottom: 0.8rem;
+}
+
+/* Related Papers */
+.related-papers {
+    margin-top: 3rem;
+}
+
+.related-papers h2 {
+    margin-bottom: 1.5rem;
+}
+
+.related-papers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.related-paper {
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.related-paper:hover {
+    transform: translateY(-5px);
+}
+
+.related-paper h3 {
+    margin-bottom: 0.8rem;
+}
+
+.related-paper h3 a {
+    color: var(--primary-color);
+}
+
+.related-paper h3 a:hover {
+    text-decoration: underline;
+}
+
+/* Comments Section */
+.comments {
+    background-color: #f1f5f9;
+    padding: 4rem 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .paper-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-of-contents {
+        display: none;
+    }
+    
+    .strengths-weaknesses {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .paper-review {
+        padding-top: 100px;
+    }
+    
+    .paper-title {
+        font-size: 2rem;
+    }
+    
+    .paper-links {
+        flex-direction: column;
+    }
+    
+    .paper-links a {
+        width: 100%;
+        text-align: center;
+    }
+} 
